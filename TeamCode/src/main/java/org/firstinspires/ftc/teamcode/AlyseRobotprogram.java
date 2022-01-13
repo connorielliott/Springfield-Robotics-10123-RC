@@ -53,11 +53,12 @@ public class AlyseRobotprogram extends LinearOpMode {
         // test function
         // testDriveG2(0.8);
 
-        // check joysticks for drive train
-        checkJoysticksG2();
+        // controller 1 functions
+        checkBumpersG1();          // check bumpers for duck spin
+        checkTriggersG1();         // check triggers for item pickup
 
-        // check bumpers for duck spin
-        checkBumpersG1();
+        // controller 2 functions
+        checkJoysticksG2();        // check joysticks for drive train
 
         telemetry.addData("Left Pow", frontLeft.getPower());
         telemetry.addData("Right Pow", frontRight.getPower());
@@ -116,6 +117,14 @@ public class AlyseRobotprogram extends LinearOpMode {
       duckSpinLeft.setPower(0);
     }
   }
+  private void checkTriggersG1() {
+      if (gamepad1.left_trigger >= deadZone)
+          itemPickup(gamepad1.left_trigger);
+      else if (gamepad1.right_trigger >= deadZone)
+          itemPickup(-gamepad1.right_trigger);
+      else
+          itemPickup(0);
+  }
 
   private void brake() {
     frontLeft.setPower(0);
@@ -143,6 +152,12 @@ public class AlyseRobotprogram extends LinearOpMode {
     backLeft.setPower(-power);
     frontRight.setPower(-power);
     backRight.setPower(-power);
+  }
+
+  // Spins the block pickup wheels
+  private void itemPickup(double power) {
+      pickupRight.setPower(-power);
+      pickupLeft.setPower(power);
   }
 }
   
